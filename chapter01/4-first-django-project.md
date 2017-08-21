@@ -84,7 +84,7 @@ blog
 ├── apps.py    # app 本身配置信息
 ├── __init__.py
 ├── migrations    # 数据库更新相关文件
-│   └── __init__.py
+│   └── __init__.py
 ├── models.py    # 数据库 model 定义
 ├── tests.py    # 测试用例
 └── views.py    # django 视图定义
@@ -167,5 +167,7 @@ python manage.py runserver 8080    # 指定端口为8080
 python manage.py 0.0.0.0:8080   # 指定 IP 和端口
 ```
 
+运行之后，访问 127.0.0.1:8080 可以看到下面的页面：
 
+![](/assets/django-first-project.png)这说明你的 Django 项目已经正常运行，只是还没有添加任何你自己的内容。后面我们会逐步完善这个项目。
 
