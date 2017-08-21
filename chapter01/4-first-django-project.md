@@ -66,12 +66,14 @@ Django 本身内建了一些 APP，比如 Admin Site，Auth等，我们可以通
 创建 Django APP 的方式有两种，第一种使用 `django-admin.py` 命令：
 
 ```
+cd GeekBlog/
 django-admin.py startapp blog
 ```
 
 或者使用 `manage.py` 命令：
 
 ```
+cd GeekBlog/
 python manage.py startapp blog
 ```
 
@@ -113,8 +115,8 @@ INSTALLED_APPS = [
 Available subcommands:
 
 [auth]
-    changepassword
-    createsuperuser
+    changepassword    # 更新密码
+    createsuperuser    # 创建超级管理员账号
 
 [django]
     check    # 检查指定 APP 中的常见问题，默认检查整个项目
