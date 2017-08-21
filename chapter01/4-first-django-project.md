@@ -155,7 +155,7 @@ Available subcommands:
 1. 将当前 Django 项目路径加入到 sys.path 中
 2. 设置环境变量 `DJANGO_SETTINGS_MODULE`，可以在命令中获取 Django `settings.py` 中的配置信息
 
-更具体的介绍，可以参看官方文档：[https://docs.djangoproject.com/en/1.11/ref/django-admin/](https://docs.djangoproject.com/en/1.11/ref/django-admin/ "django-admin.py and manage.py")。
+更具体的介绍，可以参看官方文档：[django-admin.py and manage.py](https://docs.djangoproject.com/en/1.11/ref/django-admin/ "django-admin.py and manage.py")。
 
 # 运行 Django 项目
 
