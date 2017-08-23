@@ -49,6 +49,7 @@ sudo pip install virtualenv
 
 ```
 virtualenv -p python3 blog
+# 或者：virtualenv -p /usr/bin/python3.5 blog
 cd blog
 source bin/activate
 # 或者
