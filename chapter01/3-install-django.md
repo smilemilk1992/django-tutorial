@@ -79,13 +79,13 @@ Django 支持许多不同的数据库服务器，目前主要有 PostgreSQL，My
 ```
 cd blog
 . bin/activate
-pip install django==1.10.7
+pip install django==1.11.4
 ```
 
 如果没有使用 virtualenv，则运行下面的代码安装：
 
 ```
-sudo pip install django==1.10.7
+sudo pip install django==1.11.4
 ```
 
 ### 开发版
@@ -105,7 +105,7 @@ Django 安装之后，可以通过下面的代码验证，同时查看 Django �
 ```
 >>> import django
 >>> print(django.VERSION)
-(1, 10, 7, 'final', 0)
+(1, 11, 4, 'final', 0)
 >>>
 ```
 
