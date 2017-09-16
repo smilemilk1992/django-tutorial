@@ -171,5 +171,42 @@ python manage.py 0.0.0.0:8080   # 指定 IP 和端口
 
 运行之后，访问 127.0.0.1:8080 可以看到下面的页面：
 
-![](/assets/django-first-project.png)这说明你的 Django 项目已经正常运行，只是还没有添加任何你自己的内容。后面我们会逐步完善这个项目。
+![](/assets/django-first-project.png)恭喜你，看到这个页面就说明你的 Django 项目已经正常运行！
+
+# 简单的视图和 URL 配置
+
+经过上面的操作，你已经完成了 Django 项目的初始化，只是还没有添加任何你自己的内容。下面我们简单添加一个 URL，访问是输出当前时间。
+
+首先，我们在 `blog/views.py` 中添加第一个视图，返回当前时间，代码如下：
+
+```
+# blog/views.py
+
+import datetime
+from django.http import HttpResponse
+
+
+def current_datetime(request):
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return HttpResponse('Current Datetime: %s' % now)
+```
+
+```
+# GeekBlog/urls.py
+
+from django.conf.urls import url
+from blog.views import current_datetime
+
+urlpatterns = [
+    url(r'^current_time$', current_datetime, name='current_datetime'),
+]
+```
+
+使用命令 `python manage.py runserver 0.0.0.0:9484` 运行之后，访问 `http://127.0.0.1:9484/current_time` 可以看到下面的页面：
+
+![](/assets/current_time_page.png)
+
+怎么样？是不是很简单？
+
+这里我们只简单介绍下 Django 是如果添加视图和 URL的，后面的章节会具体介绍相关的内容。
 
