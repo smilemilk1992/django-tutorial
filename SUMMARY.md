@@ -6,7 +6,7 @@
   * [Django 历史](chapter01/2-django-history.md)
   * [安装Django](chapter01/3-install-django.md)
   * [第一个Django项目](chapter01/4-first-django-project.md)
-  * [MVC模式 & MTV模式](chapter01/5-mvc-and-mtv.md)
+  * [理解Django MVC框架](chapter01/5-django-mvc.md)
 * [第二章、模型层（Models）](chapter02.md)
   * [简介 & 示例](chapter02/1-model-intro-example.md)
   * [Model 字段类型](chapter02/2-model-fields.md)
