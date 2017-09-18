@@ -12,7 +12,7 @@ Django 项目诞生于 2003 年秋天，最初由 Lawrence Journal-World 报纸�
 
 # Django 特点
 
-从 Django 本身的发展历史上我们可以看到 Django 框架的某些特点：
+Django 是应用于 Web 开发的高级动态语言框架，从其本身的发展历史上我们可以看到 Django 框架的某些特点：
 
 ### 内容管理系统
 
