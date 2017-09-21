@@ -70,6 +70,8 @@ Django Model 支持很多类型的字段类型，包括数据库中基础的整�
 
 ### 自定义类型
 
+上一章中，Article Model 中的 `UEditorField` 字段并非是 Django 内置的字段类型，而是所谓的自定义字段类型。这里我们以 `UEditorField` 为例，介绍下如何自定义一个 Model Field。
+
 # Field 参数
 
 #### null

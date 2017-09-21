@@ -63,9 +63,105 @@ DATABASES = {
 }
 ```
 
+配置好之后我们需要测试下是否可以正常连接数据库，首先输入 `python manage.py shell` 进入 Django 控制台，然后通过下面的代码测试是否连接成功：
+
+```
+>>> from django.db import connections
+>>> from django.db.utils import OperationalError
+>>> db_conn = connections['default']
+>>> try:
+...     c = db_conn.cursor()
+... except OperationalError:
+...     connected = False
+... else:
+...     connected = True
+...
+>>> connected
+True
+```
+
+`connected = True` 表示数据库连接成功。
+
 ### 数据库 Model
+
+配置好 Django DATABASES 后可以正常连接数据库，为了能操作数据库中的表，我们需要创建相应的 Django Model，所有创建的 Model 类都继承自 `django.db.models.Model`，对应数据库中的一张表。我们这里以文章（Article）为例：
+
+```
+from django.db import models
+
+class Article(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    slug = models.CharField(max_length=100, unique=True)
+    category = models.ForeignKey(Category, related_name='total_articles', limit_choices_to={'parent__isnull': False})
+    status = models.IntegerField(default=0, choices=ARTICLE_STATUS.to_choices())
+    enable_comment = models.BooleanField(default=True)
+    description = UEditorField(height=200, width=690, verbose_name=_('description'), null=True, blank=True,
+                               toolbars='full', image_path="upload/images/", file_path='upload/files/')
+    content = UEditorField(height=400, width=690, verbose_name=_('content'), toolbars='full',
+                           image_path="upload/images/", file_path='upload/files/')
+    mark = models.IntegerField(default=0, choices=ARTICLE_MARKS.to_choices())
+    tags = models.ManyToManyField(Tag, blank=True, related_name='total_articles')
+    publish_date = models.DateTimeField(auto_now_add=True)
+    login_required = models.BooleanField(blank=True, default=False)
+    thumbnail = models.ForeignKey(Photo, null=True, blank=True)
+    views_count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        app_label ='blog'
+        verbose_name = '文章'
+        verbose_name_plural = '文章'
+```
+
+上面定义的 Article Model 对应数据库中的 blog\_article 表，而 Article 中的每个字段和数据库表中字段一一对应。定义好 Model 之后我们就可以通过 Model 操作数据库了。
 
 ### 操作数据库
 
+数据库操作无非是“增删改查”四种，我们一一举例看看 Django Model 怎么实现数据库操作。
 
+#### 增（Add）
+
+```
+import datetime
+from blog.models import Article
+
+article = Article(title='test', slug='test', description='test', content='test')
+article.save()
+```
+
+#### 删（Delete）
+
+```
+from blog.models import Article
+
+article = Article.objects.get(id=1)
+article.delete()
+```
+
+#### 改（Update）
+
+```
+from blog.models import Article
+
+article = Article.objects.get(id=1)
+article.title = 'test123'
+article.save()
+```
+
+#### 查（Query）
+
+```
+from blog.models import Article
+
+articles = Article.objects.all().order_by('-created_time')
+for article in articles:
+    print(article)
+```
+
+到目前为止，我们已经完整地了解了 Django Model 是如果操作数据库的。后面我们会详细的介绍 Django 的 Model 层内容。
 
