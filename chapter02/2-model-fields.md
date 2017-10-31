@@ -66,9 +66,48 @@ class Article(models.Model):
 
 #### SmallIntegerField
 
+和 IntegerField 基本一样，表示一个 16位（2字节）整数，取值范围是-32768 ~ 32767
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    views_count = models.SmallIntegerField()
+    comment_count = models.SmallIntegerField()
+    ....
+```
+
 #### PositiveIntegerField
 
+和 IntegerField 基本一样，表示一个 32位（4字节）**正整数**，取值范围是0 ~ 2147438647
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    views_count = models.PositiveIntegerField()
+    comment_count = models.PositiveIntegerField()
+    ....
+```
+
 #### PositiveSmallIntegerField
+
+和 IntegerField 基本一样，表示一个 16位（2字节）**正整数**，取值范围是0 ~ 32767
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    views_count = models.PositiveSmallIntegerField()
+    comment_count = models.PositiveSmallIntegerField()
+    ....
+```
 
 #### BinaryField
 
@@ -80,7 +119,7 @@ class Article(models.Model):
 from django.db import models
 
 class Article(models.Model):
-    enable_comment = models.BooleanField(default=True)
+    thumbnail = models.BinaryKey(null=True, blank=True)  # 用来存储图片，实际项目中用static files更为合理
     ....
 ```
 
@@ -94,13 +133,51 @@ true & false 字段，对应数据库中的 bool 类型，默认值为None。该
 from django.db import models
 
 class Article(models.Model):
-    thumbnail = models.BinaryKey(null=True, blank=True)  # 用来存储图片，实际项目中用static files更为合理
+    enable_comment = models.BooleanField(default=True)  # 不能使用 null 参数
     ....
 ```
 
 #### NullBooleanField
 
+和 `BooleanField` 基本一样，但是允许 null 参数，使用该字段来替代 null=True 的 BooleanField 字段
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    enable_comment = models.NullBooleanField(default=True)
+    ....
+```
+
 #### CharField
+
+字符串字段，对应数据库中的 `varchar` 类型，声明时必须指定 `max_length` 参数，声明字段的最大长度
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    .....
+```
+
+#### TextField
+
+大文本字段，对应数据库中的 text 类型，在 Django 中使用 `Textarea` 表单组件。该字段的 `max_length` 参数不是必须声明的，如果设置了 `max_length`，其限制并不会在 model 或者数据库层面提现，而只会在页面的表单中体现。
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    description = models.TextField(max_length=10000, verbose_name='描述')
+    ....
+```
 
 #### CommaSeparatedIntegerField
 
@@ -119,8 +196,6 @@ class Article(models.Model):
 #### GenericIPAddressField
 
 #### SlugField
-
-#### TextField
 
 #### TimeField
 
