@@ -167,7 +167,7 @@ class Article(models.Model):
 
 #### TextField
 
-大文本字段，对应数据库中的 text 类型，在 Django 中使用 `Textarea` 表单组件。该字段的 `max_length` 参数不是必须声明的，如果设置了 `max_length`，其限制并不会在 model 或者数据库层面提现，而只会在页面的表单中体现。
+大文本字段，对应数据库中的 `text` 类型，在 Django 中使用 `Textarea` 表单组件。该字段的 `max_length` 参数不是必须声明的，如果设置了 `max_length`，其限制并不会在 model 或者数据库层面提现，而只会在页面的表单中体现。
 
 **示例：**
 
@@ -181,17 +181,105 @@ class Article(models.Model):
 
 #### CommaSeparatedIntegerField
 
+本身是一种特殊的 `CharField` 类型，以逗号分隔的方式存储整数。对应数据库中的 `varchar` 类型，声明时必须指定 `max_length` 参数，声明字段的最大长度。
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    tags = models.CommaSeparatedIntegerField(max_length=100, verbose_name='标签')
+    ....
+```
+
 #### DateField
+
+日期字段，使用 Python 中的 `datetime.date` 实例表示，对应数据库中的 `date` 类型。使用时比其他字段多了几个特殊设置参数：
+
+`DateField.auto_now`：每次保存对象时，自动设置该字段为当前日期。
+
+`DateField.auto_now_add`：当对象第一次被创建时自动设置为当前日期。
+
+**几点需要注意的地方：**
+
+1、`auto_now_add`，`auto_now` 和 `default` 设置参数相互是排斥的，同时设置会导致错误的结果；
+
+2、当设置 `auto_now` 或者 `auto_now_add` 为 True 的时候，默认会为这个字段添加两个额外的设置项：`editable = False` 和 `blank = True`
+
+3、如果你设置了 `auto_now` 或者 `auto_now_add`，则在对象被创建或者被修改的时候，会使用默认时区的日期更新对象。如果这不是你所期望的，那你可能需要通过其他方式实现你的需求，比如重写 `save` 方法等。
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    publish_date = models.DateField(auto_now_add=True, verbose_name='发布日期')
+    ....
+```
 
 #### DateTimeField
 
+日期和时间字段，使用 Python 中的 datetime.datetime 实例表示，对应数据库中的 `datetime` 类型。设置参数同 `DateField` 一样。
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    created_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updated_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    ....
+```
+
 #### DecimalField
 
-#### DurationField
+十进制浮点数字段，精准数据类型，使用 Python 中的 `Decimal` 实例表示，对应数据库中的 `decimal` 类型。该字段类型有两个**必须**提供的设置参数：
+
+`DecimalField.max_digits`：字段的位数总数，包括小数点后的位数。必须大于或等于 `decimal_places`。
+
+`DecimalField.decimal_places`：小数点后的数字位数。
+
+**示例：**
+
+```
+# 存储最大为9999，小数点后保留2位
+models.DecimalField(max_digits=6, decimal_places=2)
+# 存储最大为10亿，小数点后保留10位
+models.DecimalField(max_digits=19, decimal_places=10)
+```
+
+#### DurationField（Django 1.8 新增）
 
 #### EmailField
 
+邮箱字段，继承自 `CharField` 类型，只是在对象存储时会检查输入内容是否是合法的邮箱地址。`max_length` 默认为254。
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    author_email = models.EmailField(verbose_name='作者邮箱')
+    ....
+```
+
 #### FloatField
+
+浮点数字段，使用 Python 中的 float 实例表示，对应数据库中的 double 类型。
+
+**示例：**
+
+```
+from django.db import models
+
+class Article(models.Model):
+    rate = models.FloatField(verbose_name='评分')
+    ....
+```
 
 #### GenericIPAddressField
 
@@ -214,6 +302,8 @@ class Article(models.Model):
 ### 文件类型
 
 #### FileField
+
+文件上传字段，不支持 `primary_key` 和 `unique` 参数
 
 #### FilePathField
 
