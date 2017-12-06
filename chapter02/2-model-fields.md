@@ -253,6 +253,8 @@ models.DecimalField(max_digits=19, decimal_places=10)
 
 #### DurationField（Django 1.8 新增）
 
+用来存储一段时间的字段，使用 Python 中的 `timedelta` 实现。实际代码中没有用过，感觉较为鸡肋。
+
 #### EmailField
 
 邮箱字段，继承自 `CharField` 类型，只是在对象存储时会检查输入内容是否是合法的邮箱地址。`max_length` 默认为254。
@@ -283,6 +285,20 @@ class Article(models.Model):
 
 #### GenericIPAddressField
 
+IPv4 和 IPv6 地址字段，字符串格式如：192.168.0.1 或者 3b13:51fa::4。额外的设置参数有：
+
+`GenericIPAddressField.protocol`：限制指定协议的有效输入。接受的值为'both'（默认值），'IPv4'或'IPv6'。匹配不区分大小写。
+
+`GenericIPAddressField.unpack_ipv4`：解析IPv4映射地址如 ::ffff:192.0.2.1.如果启用该选项，则地址将被解析到192.0.2.1.默认为禁用。只有当协议 设置为'both'时才可以使用。
+
+```
+from django.db import models
+
+class Article(models.Model):
+    author_ip = models.GenericIPAddressField(verbose_name='作者IP')
+    ....
+```
+
 #### SlugField
 
 #### TimeField
@@ -308,6 +324,8 @@ class Article(models.Model):
 #### FilePathField
 
 #### ImageField
+
+图片文件上传字段，继承自 FileField，该字段会对上传的文件进行校验，确保文件是有效的图片文件。
 
 ### 自定义类型
 
