@@ -301,19 +301,74 @@ class Article(models.Model):
 
 #### SlugField
 
+继承自 `CharField`类型，Slug 本身是一个新闻术语，通常也被称为短标题（Django果真是起源于新闻界啊）。一个 Slug 只能包含字母、数字、下划线或者连字符。通常它们被用在URL中。
+
+SlugField 默认的 `max_length` 为 50 个字符，当然你也可以像 CharField 一样指定 `max_length` 的长度。 
+
+```
+from django.db import models
+
+class Article(models.Model):
+    short_url = models.SlugField(verbose_name='短链', max_length=100)
+    ....
+```
+
 #### TimeField
+
+时间字段，使用 Python 中的 `datetime.time` 实现。其声明参数和 `DateField` 一样。
+
+```
+from django.db import models
+
+class Article(model.Model):
+    generate_time = models.TimeField(auto_now=True)
+    ...
+```
 
 #### URLField
 
+继承自 `CharField`类型，存储 URL 的字段。接受可选的 `max_length` 参数，如果不指定，默认值为200。
+
+和 `CharField` 不同的是，`URLField` 在实际存储的时候回检验字段内容是否是合法的 URL 地址，非法则不允许保存。
+
+```
+from django.db import models
+
+class Article(model.Model):
+    detail_url = models.URLField(verbose_name='详情链接', max_length=500)
+    ...
+```
+
 #### UUIDField
+
+用来储存 UUID 数据的字段，使用 Python 的 UUID Class 实现。在某些特定的数据库中，使用数据库类型 uuid 存储，比如 `PostgreSQL`，在其他数据库中则是使用 chart\(32\) 类型表示。
+
+在某些情况下，你不希望使用整数来作为主键，这时候你可以选择使用 `UUIDField` 字段作为你的数据库表主键，比如：
+
+```
+import uuid
+from django.db import models
+
+class Article(model.Model):
+    id = UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    ...
+```
 
 ### 关系类型
 
+Django 的字段中包含了一些用来表示数据库表之间的关系的字段，主要包括三种关系类型：一对多，一对一，多对多。
+
 #### ForeignKey
+
+一对多关系型字段
 
 #### ManyToManyField
 
+多对多关系型字段
+
 #### OneToOneField
+
+一对一关系型字段
 
 ### 文件类型
 
