@@ -303,7 +303,7 @@ class Article(models.Model):
 
 继承自 `CharField`类型，Slug 本身是一个新闻术语，通常也被称为短标题（Django果真是起源于新闻界啊）。一个 Slug 只能包含字母、数字、下划线或者连字符。通常它们被用在URL中。
 
-SlugField 默认的 `max_length` 为 50 个字符，当然你也可以像 CharField 一样指定 `max_length` 的长度。 
+SlugField 默认的 `max_length` 为 50 个字符，当然你也可以像 CharField 一样指定 `max_length` 的长度。
 
 ```
 from django.db import models
@@ -350,9 +350,11 @@ import uuid
 from django.db import models
 
 class Article(model.Model):
-    id = UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     ...
 ```
+
+---
 
 ### 关系类型
 
@@ -360,7 +362,44 @@ Django 的字段中包含了一些用来表示数据库表之间的关系的字�
 
 #### ForeignKey
 
-一对多关系型字段
+一对多关系型字段，声明时通过第一个参数指定关联的 Model，如果需要和自己关联，则需要使用`'self'`，如：
+
+```
+from django.db import models
+
+class Category(model.Model):
+    creator = models.ForeignKey(User)
+    parent = models.ForeignKey('self')
+    ...
+```
+
+如果你需要关联到一个还未定义的 Model，你可以直接使用 Model 名称，而不是 Model 本身来声明，如：
+
+```
+creator = models.ForeignKey('User')
+```
+
+如果你需要关联到另外 APP 的 Model，也可以直接使用带有完整标签名的 Model 来声明，如：
+
+```
+creator = models.ForeignKey('auth.User')
+```
+
+后面两种声明方式可以避免一些“**循环引用**”的问题
+
+ForeignKey 涉及到很多参数，这里一一说明下 \(不包含下面的 Field 参数\)：
+
+on\_delete
+
+limit\_choices\_to
+
+related\_name
+
+to\_field
+
+db\_constraint
+
+swappable
 
 #### ManyToManyField
 
